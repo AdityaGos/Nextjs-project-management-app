@@ -1,26 +1,49 @@
+/* globals.css (Tailwind v4 CSS-first) */
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* 1) make `dark:` use .dark on a parent (like old `darkMode: "class"` behaviour) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 2) Theme tokens (light/default). These create utilities like bg-gray-100, text-blue-500, etc. */
+@theme {
+  /* colors */
+  --color-white: #ffffff;
+
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-500: #6b7280;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+
+  --color-blue-200: #93c5fd;
+  --color-blue-400: #60a5fa;
+  --color-blue-500: #3b82f6;
+  --color-blue-primary: #0275ff;
+
+  /* semantic / custom names */
+  --color-dark-bg: #101214;
+  --color-dark-secondary: #1d1f21;
+  --color-dark-tertiary: #3b3d40;
+  --color-stroke-dark: #2d3135;
+
+  /* background-image tokens -> will provide `bg-gradient-radial` and `bg-gradient-conic` */
+  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+  --background-image-gradient-conic: conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops));
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* 3) Override tokens for .dark (only override what changes) */
+@layer theme {
+  .dark {
+    /* e.g. override surface / dark values */
+    --color-dark-bg: #0b0c0d;
+    --color-dark-secondary: #141516;
+    --color-dark-tertiary: #2a2b2c;
+    /* keep others as is (no need to redefine every token) */
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+/* 4) small convenience if you want to create component classes */
+/* .btn-primary {
+  @apply px-4 py-2 rounded-md font-medium bg-blue-primary text-white;
+} */
